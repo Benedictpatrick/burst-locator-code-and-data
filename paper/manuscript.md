@@ -124,7 +124,7 @@ On the gross code under the correlated noise model of Ref. [7], a hidden noise f
 
 ## Data and code availability
 
-The circuit generator, noise sampler, estimators, network, training and evaluation scripts, and per-shot result files (`results/corr_shots.csv`, `results/nn_shots.csv`) accompany this note. Every reported number is computed from those files by `src/analyze_corr.py` and `src/eval_nn.py`.
+The circuit generator, noise sampler, estimators, network, training and evaluation scripts, and per-shot result files (`results/corr_shots.csv`, `results/nn_shots.csv`) accompany this note and are available at https://github.com/Benedictpatrick/burst-locator-code-and-data. Every reported number is computed from those files by `src/analyze_corr.py` and `src/eval_nn.py`.
 
 ## References
 
