@@ -1,0 +1,145 @@
+# Locating correlated noise bursts from the syndrome alone: a pilot study on the gross code
+
+**P. Benedict**
+Independent researcher — benedictpatrickjohn@gmail.com
+
+14 November 2026 — preprint, not peer reviewed
+
+## Abstract
+
+Dangi and Chatterjee recently showed that spatially correlated noise degrades belief-propagation-based decoders of quantum LDPC codes by orders of magnitude, and that an oracle decoder given the hidden noise field recovers most of the loss; whether the field can be estimated from the syndrome alone was left open. We study that question on the [[144,12,12]] bivariate bicycle (gross) code with an independent implementation of the circuits and noise model. At physical error rate p = 0.003 and correlation strength θ = 0.9, the mismatched BP+LSD decoder fails on 35% of 12-round memory shots while the oracle fails on 1%. We test two families of syndrome-only estimators. (i) Model-based: exact hidden-Markov inference of the field from a first decoding pass, iterated. (ii) Learned: a neural network that maps the syndrome directly to a per-site posterior over the field, followed by one model-based refinement pass. The best model-based estimator closes 37–58% of the gap between the mismatched decoder and the oracle across four correlation settings (2,000 shots each). The neural estimator with refinement closes 48% at the setting it was trained on, significantly better than the best model-based estimator on the same shots (exact McNemar p = 2.5 × 10⁻⁸). A control on uncorrelated noise shows that part of the model-based gain is unrelated to field estimation, and that a seemingly natural "ceiling" experiment leaks the answer. The hidden field is therefore partly, but so far not mostly, recoverable from the syndrome. All code and per-shot data are released.
+
+## 1. Introduction
+
+Quantum LDPC codes such as the bivariate bicycle codes of Bravyi et al. [1] promise large savings in qubit overhead, and a series of fast decoders has been developed for them, including BP+OSD [2], BP+LSD [3], Relay-BP [4], beam search [5] and PriorTilt [6]. These decoders are tuned and benchmarked under independent noise, where every fault mechanism fires independently with a known prior probability.
+
+Dangi and Chatterjee [7] examined what happens when that assumption fails. Under a noise model in which a hidden, spatially correlated Gaussian field modulates every fault probability while leaving its marginal unchanged, they report logical error rates that rise by roughly two orders of magnitude for Relay-BP, beam search and BP+OSD. They also show that handing the decoder priors conditioned on the realised field removes most of the damage, and conclude that prior mismatch is a major cause. They state explicitly that they do not claim the field can be estimated from the syndrome alone, and that designing an estimator is outside their scope.
+
+This note is a first attempt at that estimator. Our contributions are:
+
+1. An independent reproduction of the degradation and of the oracle recovery, with our own circuit generator and sampler (Section 3.1).
+2. A model-based estimator: exact forward–backward inference of the field on a hidden Markov chain, driven by a first decoding pass, with a noisy-observation variant (Section 2.3).
+3. A learned estimator: a neural network trained on simulated shots to predict the field from the syndrome (Section 2.4).
+4. Two cautionary findings from a control experiment, which limit what can be claimed (Section 3.3).
+
+We report partial success and are explicit about the limits (Section 4).
+
+## 2. Methods
+
+### 2.1 Code, circuit and decoder
+
+We use the [[144,12,12]] gross code [1] with the depth-7 CNOT syndrome-extraction schedule of Ref. [1], implemented from scratch in Stim [8]. The experiment is a Z-basis memory with 12 syndrome rounds, noiseless data initialisation and final readout, under circuit-level depolarizing noise of strength p = 0.003. Decoding uses Z-type detectors only. The detector error model has 936 detectors and 8,784 distinct fault mechanisms, matching the size reported in Ref. [4] for this decoding problem. A shot fails if any of the 12 logical observables is predicted wrongly. All decoding uses BP+LSD (min-sum, 30 iterations, order 0) from the `ldpc` package [3]; methods differ only in the priors given to it.
+
+### 2.2 Correlated noise model
+
+We follow Ref. [7]. For each round t an independent stationary Gaussian AR(1) chain J(t,k) runs over the qubit index k, with correlation ρ = exp(−1/L) and L = n^γ, where n = 288 is the number of qubits in the circuit. Each fault mechanism j is assigned a representative round and qubit, and fires independently given J with probability
+
+g_j(J) = Φ( (Φ⁻¹(p_j) + θ J(t_j, q_j)) / √(1 − θ²) ),
+
+which preserves the marginal E[g_j] = p_j for every θ. We sample faults directly at the level of the detector error model. At θ = 0.9 the model is extremely bursty: a fault with p_j = 0.002 has conditional probability about 10⁻¹¹ at J = 0 and about 0.34 at J = 3, so nearly all faults occur inside rare high-field regions. The mean number of faults per shot is unchanged (35.2–35.4 in all settings, against 35.4 for independent noise).
+
+### 2.3 Model-based estimators
+
+Given a per-mechanism estimate m_j ∈ [0, 1] of which faults fired, each round is a hidden Markov chain over the qubit index with Bernoulli emissions g_j(J_k). We discretise J on 41 levels in [−4, 4] and run forward–backward to obtain the posterior over J at every site, and from it the posterior-mean prior q_j = E[g_j(J) | m]. The decoder is then rerun with priors q. We compare:
+
+- **hard EM**: m is the hard output of the previous decode; 3 passes.
+- **robust hard EM**: as above, but the decode is treated as a noisy observation of the true faults, with false-positive rate ε = 0.03 and miss rate δ = 0.3, so that isolated mis-attributed faults do not force a spurious field spike; 3 passes.
+- **soft EM**: m is the min-sum BP posterior marginal under the current priors; 6 passes.
+- **robust soft EM**: soft marginals with the noisy-observation model; 6 passes.
+
+The estimator is given the true θ and γ. The values of ε and δ were chosen on a separate 280-shot pilot with different seeds.
+
+### 2.4 Neural estimator
+
+A fully connected network (936 inputs, three hidden layers of width 3,072 with GELU activations) outputs, for each of the 3,456 sites (12 rounds × 288 qubits), a categorical distribution over seven field bins with edges at J = 1, 1.5, 2, 2.5, 3, 3.5. It is trained with class-weighted cross-entropy on freshly simulated shots (syndrome, true field), generated on the GPU, for 20 minutes on a laptop GPU (5,423 steps of 256 shots, 1.39 million shots, AdamW, learning rate 3 × 10⁻⁴). Priors are obtained as q_j = Σ_k P(bin k at site of j) · E[g_j | bin k]. We report the network alone (**nn**) and followed by one robust hard-EM pass (**nn + refine**). The network was trained only at θ = 0.9, γ = 0.5 and is evaluated only there, on seeds disjoint from training.
+
+### 2.5 Reference points
+
+- **nominal**: priors p_j (the mismatched decoder).
+- **oracle**: priors g_j(J) for the realised field. This uses hidden information and is a bound, not a decoder.
+
+We define the fraction of the oracle gap closed by a method as (F_nominal − F_method) / (F_nominal − F_oracle), with F the number of failures on the same shots.
+
+## 3. Results
+
+### 3.1 Reproduction and model-based estimators
+
+Table 1 gives failures in 2,000 shots per setting; all methods decode identical shots. Figure 1 shows the same data with 95% Wilson intervals.
+
+**Table 1.** Failures per 2,000 shots, gross code, p = 0.003. "Gap closed" refers to the best syndrome-only method in the row (bold).
+
+| θ | γ | nominal | hard EM | robust hard EM | soft EM | robust soft EM | oracle | gap closed |
+|---|---|---|---|---|---|---|---|---|
+| 0.9 | 0.5 | 701 | 595 | 476 | **448** | 558 | 20 | 37% |
+| 0.9 | 0.25 | 119 | 105 | 60 | **55** | 80 | 0 | 54% |
+| 0.7 | 0.5 | 462 | 312 | 310 | **269** | 389 | 47 | 47% |
+| 0.7 | 0.25 | 80 | 37 | **34** | 43 | 63 | 0 | 58% |
+
+The degradation and the oracle recovery reported in Ref. [7] reproduce: at θ = 0.9, γ = 0.5 the mismatched decoder fails on 35.1% of shots (95% interval 33.0–37.2%) and the oracle on 1.0% (0.6–1.5%). Syndrome-only estimation recovers between 37% and 58% of the gap. Soft EM is best in three settings and robust hard EM in one. Combining the two (robust soft EM) is worse than either in every setting.
+
+The methods differ in how they fail. Robust hard EM almost never turns a correct nominal decode into a failure (8, 0, 9 and 2 such shots in the four settings), whereas soft EM breaks 18–32 shots per setting while fixing more.
+
+![Figure 1](../results/corr_fig.png)
+
+**Figure 1.** Logical failure probability per 12-round shot with 95% Wilson intervals. Starred methods use hidden information; "truth-informed" is the leaky quantity discussed in Section 3.3 and is not a valid bound. Bars with zero observed failures are drawn at the plot floor.
+
+### 3.2 Neural estimator
+
+Table 2 compares the network with the model-based estimators on 2,000 fresh shots at θ = 0.9, γ = 0.5.
+
+**Table 2.** Failures per 2,000 shots, θ = 0.9, γ = 0.5 (evaluation seeds disjoint from Table 1 and from training).
+
+| Method | Failures | Gap closed |
+|---|---|---|
+| nominal | 679 | 0% |
+| robust hard EM | 459 | 33% |
+| soft EM | 451 | 35% |
+| nn | 430 | 38% |
+| **nn + refine** | **361** | **48%** |
+| oracle | 20 | 100% |
+
+The network alone is not significantly better than soft EM (140 shots where only the network succeeds against 119 where only soft EM does; exact McNemar p = 0.21). The network followed by one refinement pass is significantly better than soft EM (175 against 85; p = 2.5 × 10⁻⁸) and than robust hard EM (180 against 82; p = 1.3 × 10⁻⁹). At the end of training the network recovered 46% of sites with J > 2 at 26% precision, against a base rate of 2.3%, and was still improving slowly. Network inference took 3.2 s for all 2,000 shots including sampling.
+
+### 3.3 Control on uncorrelated noise
+
+We ran the model-based estimators, configured for θ = 0.9 and γ = 0.5, on shots drawn with θ = 0 (independent noise). Failures per 2,000 shots: nominal 27, hard EM 17, robust hard EM 7, soft EM 24, robust soft EM 24. Two observations follow.
+
+**Part of the gain is not field estimation.** Robust hard EM reduces failures from 27 to 7 on noise that contains no field at all, fixing 20 shots and breaking none. Re-decoding with priors sharpened around a first solution evidently helps BP+LSD in its own right, in the spirit of prior-perturbation decoders [6]. The improvements in Table 1 are therefore a mixture of field estimation and this generic effect, and we have not separated the two.
+
+**A "truth-informed" ceiling leaks the answer.** A tempting upper bound on the estimator is to run the HMM on the true fault pattern instead of a decoded one. Under correlated noise this gave results at or below the oracle (7 against 20 failures at θ = 0.9, γ = 0.5; 19 against 47 at θ = 0.7, γ = 0.5). On the control it gave 0 failures where the oracle, which equals the nominal decoder at θ = 0, gave 27. Conditioning on the true faults raises the priors exactly at the fault locations and so tells the decoder the solution. This quantity is not a valid ceiling for field estimation and should not be read as evidence that the field is recoverable.
+
+## 4. Limitations
+
+- **Known hyperparameters.** All estimators are given the true θ and γ, and the network is trained at a single setting. Robustness to misspecified or unknown correlation parameters is untested, apart from the θ = 0 control.
+- **One code, one basis, one decoder.** Results are for the gross code, Z-basis memory, and BP+LSD at order 0. Stronger decoders such as Relay-BP [4] may leave a different gap.
+- **One noise level.** p = 0.003 only, where failure rates are high enough to measure with 2,000 shots.
+- **Synthetic correlation.** The AR(1) field over the circuit's qubit index follows Ref. [7] and is not a hardware model. Rounds are independent.
+- **Small network, short training.** A generic fully connected network trained for 20 minutes; no architecture search, no use of the code's symmetry.
+- **Confounded gains.** As shown in Section 3.3, the model-based gains include an effect unrelated to field estimation.
+- **Pilot-scale statistics.** 2,000 shots per point; zero-failure entries bound the rate only below about 0.2%.
+
+## 5. Conclusion
+
+On the gross code under the correlated noise model of Ref. [7], a hidden noise field can be partly recovered from the syndrome alone: iterated hidden-Markov inference closes roughly a third to a half of the gap to an oracle decoder, and a small neural burst locator with one refinement pass closes 48% at the setting tested. A large gap to the oracle remains. The diagnosed obstacle is the localisation of bursts from the raw syndrome, which a first decoding pass does poorly and a learned estimator does better. The natural next steps are a network that exploits the code's translation symmetry, training across correlation parameters, a control that isolates field estimation from generic re-decoding gains, and evaluation with stronger decoders.
+
+## Data and code availability
+
+The circuit generator, noise sampler, estimators, network, training and evaluation scripts, and per-shot result files (`results/corr_shots.csv`, `results/nn_shots.csv`) accompany this note. Every reported number is computed from those files by `src/analyze_corr.py` and `src/eval_nn.py`.
+
+## References
+
+[1] S. Bravyi, A. W. Cross, J. M. Gambetta, D. Maslov, P. Rall, T. J. Yoder, "High-threshold and low-overhead fault-tolerant quantum memory", Nature 627, 778–782 (2024). arXiv:2308.07915.
+
+[2] J. Roffe, D. R. White, S. Burton, E. Campbell, "Decoding across the quantum low-density parity-check code landscape", Phys. Rev. Research 2, 043423 (2020).
+
+[3] T. Hillmann, L. Berent, A. O. Quintavalle, J. Eisert, R. Wille, J. Roffe, "Localized statistics decoding for quantum low-density parity-check codes", Nature Communications 16, 8214 (2025). arXiv:2406.18655.
+
+[4] T. Müller, T. Alexander, M. E. Beverland, M. Bühler, B. R. Johnson, T. Maurer, D. Vandeth, "Improved belief propagation is sufficient for real-time decoding of quantum memory", arXiv:2506.01779.
+
+[5] M. Ye, D. Wecker, N. Delfosse, "Beam search decoder for quantum LDPC codes", arXiv:2512.07057.
+
+[6] M. Ye, N. Delfosse, "PriorTilt: Decoding quantum LDPC codes with sparse perturbations of belief propagation priors", arXiv:2611.13373.
+
+[7] A. Dangi, A. Chatterjee, "BP-based qLDPC decoding under long-range correlated noise: trapping configurations and prior mismatch", arXiv:2611.10796.
+
+[8] C. Gidney, "Stim: a fast stabilizer circuit simulator", Quantum 5, 497 (2021).
