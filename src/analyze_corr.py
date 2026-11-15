@@ -44,7 +44,13 @@ def main(path="results/corr_shots.csv"):
 
     corr = s[s.theta_data > 0]
     settings = list(corr.groupby(["theta_data", "gamma_data"], sort=False).groups)
-    fig, axes = plt.subplots(1, len(settings), figsize=(3.1 * len(settings), 3.6), sharey=True)
+    plot(corr, settings, 1, len(settings), 7, path.replace("corr_shots.csv", "corr_fig.png"))
+    plot(corr, settings, 2, 2, 9, path.replace("corr_shots.csv", "corr_fig_2x2.png"))  # larger panels for print
+
+
+def plot(corr, settings, nrows, ncols, tick_size, out):
+    fig, axes = plt.subplots(nrows, ncols, figsize=(3.1 * ncols, 3.6 * nrows), sharey=True, squeeze=False)
+    axes = axes.ravel()
     colors = {"nominal": "#888888", "hard": "#9ecae1", "robust": "#4292c6", "soft": "#fdae6b",
               "softrobust": "#e6550d", "truth": "#74c476", "oracle": "#238b45"}
     for ax, (th, ga) in zip(axes, settings):
@@ -52,14 +58,17 @@ def main(path="results/corr_shots.csv"):
         ax.bar(range(len(METHODS)), g.rate.clip(lower=2e-4), yerr=[(g.rate - g.lo).clip(lower=0), (g.hi - g.rate).clip(lower=0)], capsize=2,
                color=[colors[m] for m in METHODS])
         ax.set_xticks(range(len(METHODS)))
-        ax.set_xticklabels([LABEL[m] for m in METHODS], rotation=60, ha="right", fontsize=7)
+        ax.set_xticklabels([LABEL[m] for m in METHODS], rotation=60, ha="right", fontsize=tick_size)
         ax.set_title(f"θ = {th}, γ = {ga}", fontsize=9)
         ax.set_yscale("log")
         ax.grid(True, axis="y", which="both", alpha=0.3)
-    axes[0].set_ylabel("logical failure probability per shot")
-    fig.suptitle("[[144,12,12]] gross code, p = 0.003, 12 rounds, BP+LSD  (* uses hidden information)", fontsize=9)
+    for ax in axes[::ncols]:
+        ax.set_ylabel("logical failure probability per shot")
+    title = "[[144,12,12]] gross code, p = 0.003, 12 rounds, BP+LSD"
+    fig.suptitle(title + ("  " if ncols > 2 else "\n") + "(* uses hidden information)", fontsize=9)
     fig.tight_layout()
-    fig.savefig(path.replace("corr_shots.csv", "corr_fig.png"), dpi=200)
+    fig.savefig(out, dpi=200)
+    plt.close(fig)
 
 
 if __name__ == "__main__":

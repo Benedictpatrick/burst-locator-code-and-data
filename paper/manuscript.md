@@ -79,7 +79,7 @@ The degradation and the oracle recovery reported in Ref. [7] reproduce: at θ = 
 
 The methods differ in how they fail. Robust hard EM almost never turns a correct nominal decode into a failure (8, 0, 9 and 2 such shots in the four settings), whereas soft EM breaks 18–32 shots per setting while fixing more.
 
-![Figure 1](../results/corr_fig.png)
+![Figure 1](../results/corr_fig_2x2.png)
 
 **Figure 1.** Logical failure probability per 12-round shot with 95% Wilson intervals. Starred methods use hidden information; "truth-informed" is the leaky quantity discussed in Section 3.3 and is not a valid bound. Bars with zero observed failures are drawn at the plot floor.
 
