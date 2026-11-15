@@ -3,11 +3,11 @@
 **P. Benedict**
 Independent researcher — benedictpatrickjohn@gmail.com
 
-14 November 2026 — preprint, not peer reviewed
+15 November 2026 — preprint, not peer reviewed (revised: neural estimator evaluated at four correlation settings)
 
 ## Abstract
 
-Dangi and Chatterjee recently showed that spatially correlated noise degrades belief-propagation-based decoders of quantum LDPC codes by orders of magnitude, and that an oracle decoder given the hidden noise field recovers most of the loss; whether the field can be estimated from the syndrome alone was left open. We study that question on the [[144,12,12]] bivariate bicycle (gross) code with an independent implementation of the circuits and noise model. At physical error rate p = 0.003 and correlation strength θ = 0.9, the mismatched BP+LSD decoder fails on 35% of 12-round memory shots while the oracle fails on 1%. We test two families of syndrome-only estimators. (i) Model-based: exact hidden-Markov inference of the field from a first decoding pass, iterated. (ii) Learned: a neural network that maps the syndrome directly to a per-site posterior over the field, followed by one model-based refinement pass. The best model-based estimator closes 37–58% of the gap between the mismatched decoder and the oracle across four correlation settings (2,000 shots each). The neural estimator with refinement closes 48% at the setting it was trained on, significantly better than the best model-based estimator on the same shots (exact McNemar p = 2.5 × 10⁻⁸). A control on uncorrelated noise shows that part of the model-based gain is unrelated to field estimation, and that a seemingly natural "ceiling" experiment leaks the answer. The hidden field is therefore partly, but so far not mostly, recoverable from the syndrome. All code and per-shot data are released.
+Dangi and Chatterjee recently showed that spatially correlated noise degrades belief-propagation-based decoders of quantum LDPC codes by orders of magnitude, and that an oracle decoder given the hidden noise field recovers most of the loss; whether the field can be estimated from the syndrome alone was left open. We study that question on the [[144,12,12]] bivariate bicycle (gross) code with an independent implementation of the circuits and noise model. At physical error rate p = 0.003 and correlation strength θ = 0.9, the mismatched BP+LSD decoder fails on 35% of 12-round memory shots while the oracle fails on 1%. We test two families of syndrome-only estimators. (i) Model-based: exact hidden-Markov inference of the field from a first decoding pass, iterated. (ii) Learned: a neural network that maps the syndrome directly to a per-site posterior over the field, followed by one model-based refinement pass. The best model-based estimator closes 37–58% of the gap between the mismatched decoder and the oracle across four correlation settings (2,000 shots each). The neural estimator with refinement is the best method under strong correlation (θ = 0.9), closing 48% and 59% of the gap and significantly outperforming the best model-based estimator on the same shots (exact McNemar p = 2.5 × 10⁻⁸ and p = 0.018). Under weaker correlation (θ = 0.7) it closes 44% and 37% and is statistically indistinguishable from the model-based estimators, and the network without refinement is significantly worse than them. A control on uncorrelated noise shows that part of the model-based gain is unrelated to field estimation, and that a seemingly natural "ceiling" experiment leaks the answer. The hidden field is therefore partly, but so far not mostly, recoverable from the syndrome. All code and per-shot data are released.
 
 ## 1. Introduction
 
@@ -51,7 +51,7 @@ The estimator is given the true θ and γ. The values of ε and δ were chosen o
 
 ### 2.4 Neural estimator
 
-A fully connected network (936 inputs, three hidden layers of width 3,072 with GELU activations) outputs, for each of the 3,456 sites (12 rounds × 288 qubits), a categorical distribution over seven field bins with edges at J = 1, 1.5, 2, 2.5, 3, 3.5. It is trained with class-weighted cross-entropy on freshly simulated shots (syndrome, true field), generated on the GPU, for 20 minutes on a laptop GPU (5,423 steps of 256 shots, 1.39 million shots, AdamW, learning rate 3 × 10⁻⁴). Priors are obtained as q_j = Σ_k P(bin k at site of j) · E[g_j | bin k]. We report the network alone (**nn**) and followed by one robust hard-EM pass (**nn + refine**). The network was trained only at θ = 0.9, γ = 0.5 and is evaluated only there, on seeds disjoint from training.
+A fully connected network (936 inputs, three hidden layers of width 3,072 with GELU activations) outputs, for each of the 3,456 sites (12 rounds × 288 qubits), a categorical distribution over seven field bins with edges at J = 1, 1.5, 2, 2.5, 3, 3.5. It is trained with class-weighted cross-entropy on freshly simulated shots (syndrome, true field), generated on the GPU, for 20 minutes on a laptop GPU (5,423 steps of 256 shots, 1.39 million shots, AdamW, learning rate 3 × 10⁻⁴). Priors are obtained as q_j = Σ_k P(bin k at site of j) · E[g_j | bin k]. We report the network alone (**nn**) and followed by one robust hard-EM pass (**nn + refine**). A separate network is trained for each correlation setting and evaluated at that setting, on seeds disjoint from training. The networks for the three other settings were trained for 12 minutes each (4,966 to 6,051 steps, 1.27 to 1.55 million shots).
 
 ### 2.5 Reference points
 
@@ -85,7 +85,7 @@ The methods differ in how they fail. Robust hard EM almost never turns a correct
 
 ### 3.2 Neural estimator
 
-Table 2 compares the network with the model-based estimators on 2,000 fresh shots at θ = 0.9, γ = 0.5.
+Table 2 compares the network with the model-based estimators on 2,000 fresh shots at θ = 0.9, γ = 0.5, and Table 3 extends the comparison to the other three settings.
 
 **Table 2.** Failures per 2,000 shots, θ = 0.9, γ = 0.5 (evaluation seeds disjoint from Table 1 and from training).
 
@@ -100,6 +100,16 @@ Table 2 compares the network with the model-based estimators on 2,000 fresh shot
 
 The network alone is not significantly better than soft EM (140 shots where only the network succeeds against 119 where only soft EM does; exact McNemar p = 0.21). The network followed by one refinement pass is significantly better than soft EM (175 against 85; p = 2.5 × 10⁻⁸) and than robust hard EM (180 against 82; p = 1.3 × 10⁻⁹). At the end of training the network recovered 46% of sites with J > 2 at 26% precision, against a base rate of 2.3%, and was still improving slowly. Network inference took 3.2 s for all 2,000 shots including sampling.
 
+**Table 3.** Failures per 2,000 shots at the other three settings, each with its own network (evaluation seeds disjoint from training). The last column is the exact McNemar p-value for nn + refine against soft EM on the same shots.
+
+| θ | γ | nominal | robust hard EM | soft EM | nn | nn + refine | oracle | gap closed by nn + refine | p |
+|---|---|---|---|---|---|---|---|---|---|
+| 0.9 | 0.25 | 118 | 75 | 67 | 68 | **48** | 0 | 59% | 0.018 |
+| 0.7 | 0.5 | 455 | 284 | **259** | 356 | 271 | 36 | 44% | 0.42 |
+| 0.7 | 0.25 | 91 | 52 | **51** | 88 | 57 | 0 | 37% | 0.48 |
+
+The advantage of the learned estimator depends on the correlation strength. At θ = 0.9 the network with refinement is the best method at both correlation lengths. At θ = 0.7 it is not: with refinement it is statistically indistinguishable from soft EM and robust hard EM, and the network alone is significantly worse than soft EM (p = 4.2 × 10⁻¹¹ at γ = 0.5 and p = 6.5 × 10⁻⁶ at γ = 0.25), closing only 24% and 3% of the gap. At θ = 0.7 the conditional fault probability varies less sharply with the field, so bursts are less distinct from ordinary noise; whether a longer-trained or structured network would recover an advantage there is untested. These three networks were trained for 12 minutes against 20 for the network of Table 2.
+
 ### 3.3 Control on uncorrelated noise
 
 We ran the model-based estimators, configured for θ = 0.9 and γ = 0.5, on shots drawn with θ = 0 (independent noise). Failures per 2,000 shots: nominal 27, hard EM 17, robust hard EM 7, soft EM 24, robust soft EM 24. Two observations follow.
@@ -110,21 +120,21 @@ We ran the model-based estimators, configured for θ = 0.9 and γ = 0.5, on shot
 
 ## 4. Limitations
 
-- **Known hyperparameters.** All estimators are given the true θ and γ, and the network is trained at a single setting. Robustness to misspecified or unknown correlation parameters is untested, apart from the θ = 0 control.
+- **Known hyperparameters.** All estimators are given the true θ and γ, and each network is trained and tested at a single matched setting. Robustness to misspecified or unknown correlation parameters is untested, apart from the θ = 0 control.
 - **One code, one basis, one decoder.** Results are for the gross code, Z-basis memory, and BP+LSD at order 0. Stronger decoders such as Relay-BP [4] may leave a different gap.
 - **One noise level.** p = 0.003 only, where failure rates are high enough to measure with 2,000 shots.
 - **Synthetic correlation.** The AR(1) field over the circuit's qubit index follows Ref. [7] and is not a hardware model. Rounds are independent.
-- **Small network, short training.** A generic fully connected network trained for 20 minutes; no architecture search, no use of the code's symmetry.
+- **Small network, short training.** A generic fully connected network trained for 12 to 20 minutes per setting, with unequal training time across settings; no architecture search, no use of the code's symmetry.
 - **Confounded gains.** As shown in Section 3.3, the model-based gains include an effect unrelated to field estimation.
 - **Pilot-scale statistics.** 2,000 shots per point; zero-failure entries bound the rate only below about 0.2%.
 
 ## 5. Conclusion
 
-On the gross code under the correlated noise model of Ref. [7], a hidden noise field can be partly recovered from the syndrome alone: iterated hidden-Markov inference closes roughly a third to a half of the gap to an oracle decoder, and a small neural burst locator with one refinement pass closes 48% at the setting tested. A large gap to the oracle remains. The diagnosed obstacle is the localisation of bursts from the raw syndrome, which a first decoding pass does poorly and a learned estimator does better. The natural next steps are a network that exploits the code's translation symmetry, training across correlation parameters, a control that isolates field estimation from generic re-decoding gains, and evaluation with stronger decoders.
+On the gross code under the correlated noise model of Ref. [7], a hidden noise field can be partly recovered from the syndrome alone: iterated hidden-Markov inference closes roughly a third to a half of the gap to an oracle decoder, and a small neural burst locator with one refinement pass does better under strong correlation (48% and 59% at θ = 0.9) but not under weaker correlation (θ = 0.7), where it matches the model-based estimators at best. A large gap to the oracle remains. The diagnosed obstacle is the localisation of bursts from the raw syndrome, which a first decoding pass does poorly and a learned estimator does better. The natural next steps are a network that exploits the code's translation symmetry, training across correlation parameters, a control that isolates field estimation from generic re-decoding gains, and evaluation with stronger decoders.
 
 ## Data and code availability
 
-The circuit generator, noise sampler, estimators, network, training and evaluation scripts, and per-shot result files (`results/corr_shots.csv`, `results/nn_shots.csv`) accompany this note and are available at https://github.com/Benedictpatrick/burst-locator-code-and-data. Every reported number is computed from those files by `src/analyze_corr.py` and `src/eval_nn.py`.
+The circuit generator, noise sampler, estimators, network, training and evaluation scripts, and per-shot result files (`results/corr_shots.csv`, `results/nn_shots.csv`, `results/v2/nn_shots_*.csv`) accompany this note and are available at https://github.com/Benedictpatrick/burst-locator-code-and-data. Every reported number is computed from those files by `src/analyze_corr.py` and `src/eval_nn.py`.
 
 ## References
 

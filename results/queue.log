@@ -1,0 +1,242 @@
+[2026-11-15 11:09:49] queue started
+[2026-11-15 11:09:49] start train t0.9_g0.5
+sampler check: mean errors/shot in first batch 35.2 (i.i.d. expectation 35.4)
+step 100 (12s, 25600 shots) loss 1.1939 burst recall 0.00 precision 0.00
+step 200 (24s, 51200 shots) loss 1.1811 burst recall 0.00 precision 0.00
+step 300 (36s, 76800 shots) loss 1.1627 burst recall 0.03 precision 0.15
+step 400 (49s, 102400 shots) loss 1.1503 burst recall 0.06 precision 0.15
+step 500 (67s, 128000 shots) loss 1.1203 burst recall 0.19 precision 0.20
+step 600 (105s, 153600 shots) loss 1.1065 burst recall 0.19 precision 0.19
+step 700 (117s, 179200 shots) loss 1.0922 burst recall 0.23 precision 0.21
+step 800 (129s, 204800 shots) loss 1.0915 burst recall 0.26 precision 0.21
+step 900 (141s, 230400 shots) loss 1.0918 burst recall 0.27 precision 0.21
+step 1000 (154s, 256000 shots) loss 1.0803 burst recall 0.29 precision 0.21
+step 1100 (166s, 281600 shots) loss 1.0863 burst recall 0.28 precision 0.21
+step 1200 (178s, 307200 shots) loss 1.0777 burst recall 0.29 precision 0.22
+step 1300 (190s, 332800 shots) loss 1.0730 burst recall 0.30 precision 0.22
+step 1400 (205s, 358400 shots) loss 1.0789 burst recall 0.31 precision 0.22
+step 1500 (256s, 384000 shots) loss 1.0728 burst recall 0.34 precision 0.23
+step 1600 (271s, 409600 shots) loss 1.0690 burst recall 0.34 precision 0.24
+step 1700 (291s, 435200 shots) loss 1.0539 burst recall 0.33 precision 0.22
+step 1800 (327s, 460800 shots) loss 1.0671 burst recall 0.34 precision 0.23
+[2026-11-15 11:16:09] queue started
+[2026-11-15 11:16:09] start train t0.9_g0.25
+sampler check: mean errors/shot in first batch 34.9 (i.i.d. expectation 35.4)
+step 100 (20s, 25600 shots) loss 1.2019 burst recall 0.00 precision 0.00
+step 200 (37s, 51200 shots) loss 1.1928 burst recall 0.00 precision 0.00
+step 300 (53s, 76800 shots) loss 1.2025 burst recall 0.00 precision 0.00
+step 400 (66s, 102400 shots) loss 1.2011 burst recall 0.00 precision 0.00
+step 500 (78s, 128000 shots) loss 1.1985 burst recall 0.00 precision 0.00
+step 600 (92s, 153600 shots) loss 1.1947 burst recall 0.00 precision 0.00
+step 700 (107s, 179200 shots) loss 1.1828 burst recall 0.00 precision 0.20
+step 800 (122s, 204800 shots) loss 1.1788 burst recall 0.01 precision 0.22
+step 900 (136s, 230400 shots) loss 1.1776 burst recall 0.02 precision 0.18
+step 1000 (151s, 256000 shots) loss 1.1701 burst recall 0.03 precision 0.20
+step 1100 (163s, 281600 shots) loss 1.1708 burst recall 0.03 precision 0.21
+step 1200 (175s, 307200 shots) loss 1.1627 burst recall 0.05 precision 0.20
+step 1300 (187s, 332800 shots) loss 1.1612 burst recall 0.05 precision 0.22
+step 1400 (202s, 358400 shots) loss 1.1570 burst recall 0.06 precision 0.23
+step 1500 (214s, 384000 shots) loss 1.1568 burst recall 0.06 precision 0.22
+step 1600 (229s, 409600 shots) loss 1.1530 burst recall 0.07 precision 0.25
+step 1700 (244s, 435200 shots) loss 1.1463 burst recall 0.07 precision 0.23
+step 1800 (260s, 460800 shots) loss 1.1512 burst recall 0.07 precision 0.26
+step 1900 (275s, 486400 shots) loss 1.1509 burst recall 0.09 precision 0.26
+step 2000 (290s, 512000 shots) loss 1.1517 burst recall 0.09 precision 0.25
+step 2100 (305s, 537600 shots) loss 1.1382 burst recall 0.10 precision 0.24
+step 2200 (320s, 563200 shots) loss 1.1526 burst recall 0.09 precision 0.27
+step 2300 (333s, 588800 shots) loss 1.1451 burst recall 0.11 precision 0.27
+step 2400 (345s, 614400 shots) loss 1.1437 burst recall 0.12 precision 0.27
+step 2500 (357s, 640000 shots) loss 1.1424 burst recall 0.10 precision 0.29
+step 2600 (372s, 665600 shots) loss 1.1469 burst recall 0.11 precision 0.28
+step 2700 (387s, 691200 shots) loss 1.1395 burst recall 0.11 precision 0.28
+step 2800 (402s, 716800 shots) loss 1.1365 burst recall 0.11 precision 0.29
+step 2900 (416s, 742400 shots) loss 1.1402 burst recall 0.12 precision 0.28
+step 3000 (431s, 768000 shots) loss 1.1387 burst recall 0.11 precision 0.30
+step 3100 (445s, 793600 shots) loss 1.1347 burst recall 0.12 precision 0.29
+step 3200 (461s, 819200 shots) loss 1.1326 burst recall 0.12 precision 0.30
+step 3300 (476s, 844800 shots) loss 1.1351 burst recall 0.13 precision 0.30
+step 3400 (492s, 870400 shots) loss 1.1360 burst recall 0.13 precision 0.30
+step 3500 (506s, 896000 shots) loss 1.1312 burst recall 0.14 precision 0.29
+step 3600 (521s, 921600 shots) loss 1.1348 burst recall 0.14 precision 0.30
+step 3700 (536s, 947200 shots) loss 1.1289 burst recall 0.15 precision 0.31
+step 3800 (550s, 972800 shots) loss 1.1350 burst recall 0.15 precision 0.30
+step 3900 (565s, 998400 shots) loss 1.1332 burst recall 0.13 precision 0.32
+step 4000 (580s, 1024000 shots) loss 1.1339 burst recall 0.15 precision 0.30
+step 4100 (595s, 1049600 shots) loss 1.1298 burst recall 0.15 precision 0.30
+step 4200 (611s, 1075200 shots) loss 1.1279 burst recall 0.15 precision 0.31
+step 4300 (625s, 1100800 shots) loss 1.1322 burst recall 0.16 precision 0.31
+step 4400 (640s, 1126400 shots) loss 1.1306 burst recall 0.15 precision 0.31
+step 4500 (655s, 1152000 shots) loss 1.1189 burst recall 0.16 precision 0.31
+step 4600 (670s, 1177600 shots) loss 1.1228 burst recall 0.17 precision 0.30
+step 4700 (685s, 1203200 shots) loss 1.1256 burst recall 0.16 precision 0.30
+step 4800 (700s, 1228800 shots) loss 1.1264 burst recall 0.16 precision 0.32
+step 4900 (712s, 1254400 shots) loss 1.1327 burst recall 0.17 precision 0.30
+saved results/v2/net_t0.9_g0.25.pt after 4966 steps (1271296 training shots)
+[2026-11-15 11:28:32] done train t0.9_g0.25 in 12.4 min
+[2026-11-15 11:28:32] start train t0.7_g0.5
+sampler check: mean errors/shot in first batch 34.8 (i.i.d. expectation 35.4)
+step 100 (12s, 25600 shots) loss 1.1953 burst recall 0.00 precision 0.00
+[2026-11-15 11:28:56] queue started
+[2026-11-15 11:28:56] skip train t0.9_g0.25: results/v2/net_t0.9_g0.25.pt exists
+[2026-11-15 11:28:56] start train t0.7_g0.5
+sampler check: mean errors/shot in first batch 34.8 (i.i.d. expectation 35.4)
+step 100 (12s, 25600 shots) loss 1.1953 burst recall 0.00 precision 0.00
+step 200 (24s, 51200 shots) loss 1.1837 burst recall 0.00 precision 0.00
+step 300 (36s, 76800 shots) loss 1.1831 burst recall 0.01 precision 0.15
+step 400 (48s, 102400 shots) loss 1.1673 burst recall 0.04 precision 0.16
+step 500 (59s, 128000 shots) loss 1.1471 burst recall 0.09 precision 0.14
+step 600 (71s, 153600 shots) loss 1.1391 burst recall 0.07 precision 0.19
+step 700 (83s, 179200 shots) loss 1.1200 burst recall 0.11 precision 0.19
+step 800 (95s, 204800 shots) loss 1.1222 burst recall 0.15 precision 0.17
+step 900 (107s, 230400 shots) loss 1.1203 burst recall 0.17 precision 0.19
+step 1000 (119s, 256000 shots) loss 1.1087 burst recall 0.17 precision 0.18
+step 1100 (131s, 281600 shots) loss 1.1158 burst recall 0.16 precision 0.18
+step 1200 (143s, 307200 shots) loss 1.1075 burst recall 0.18 precision 0.20
+step 1300 (155s, 332800 shots) loss 1.1063 burst recall 0.18 precision 0.20
+step 1400 (167s, 358400 shots) loss 1.1099 burst recall 0.19 precision 0.19
+step 1500 (179s, 384000 shots) loss 1.1044 burst recall 0.20 precision 0.22
+step 1600 (191s, 409600 shots) loss 1.1006 burst recall 0.20 precision 0.20
+step 1700 (203s, 435200 shots) loss 1.0889 burst recall 0.18 precision 0.18
+step 1800 (215s, 460800 shots) loss 1.1021 burst recall 0.19 precision 0.19
+step 1900 (226s, 486400 shots) loss 1.1002 burst recall 0.20 precision 0.20
+step 2000 (238s, 512000 shots) loss 1.1082 burst recall 0.22 precision 0.20
+step 2100 (250s, 537600 shots) loss 1.0896 burst recall 0.21 precision 0.19
+step 2200 (262s, 563200 shots) loss 1.1033 burst recall 0.22 precision 0.20
+step 2300 (274s, 588800 shots) loss 1.1046 burst recall 0.22 precision 0.21
+step 2400 (286s, 614400 shots) loss 1.0968 burst recall 0.21 precision 0.20
+step 2500 (298s, 640000 shots) loss 1.0928 burst recall 0.21 precision 0.21
+step 2600 (310s, 665600 shots) loss 1.1010 burst recall 0.23 precision 0.21
+step 2700 (322s, 691200 shots) loss 1.0977 burst recall 0.23 precision 0.20
+step 2800 (334s, 716800 shots) loss 1.0867 burst recall 0.24 precision 0.21
+step 2900 (346s, 742400 shots) loss 1.0956 burst recall 0.26 precision 0.20
+step 3000 (358s, 768000 shots) loss 1.0965 burst recall 0.23 precision 0.22
+step 3100 (370s, 793600 shots) loss 1.0888 burst recall 0.25 precision 0.22
+step 3200 (382s, 819200 shots) loss 1.0861 burst recall 0.23 precision 0.21
+step 3300 (394s, 844800 shots) loss 1.0966 burst recall 0.26 precision 0.22
+step 3400 (406s, 870400 shots) loss 1.0936 burst recall 0.26 precision 0.21
+step 3500 (418s, 896000 shots) loss 1.0767 burst recall 0.25 precision 0.22
+step 3600 (430s, 921600 shots) loss 1.0911 burst recall 0.24 precision 0.22
+step 3700 (442s, 947200 shots) loss 1.0827 burst recall 0.25 precision 0.21
+step 3800 (454s, 972800 shots) loss 1.0876 burst recall 0.27 precision 0.21
+step 3900 (466s, 998400 shots) loss 1.0923 burst recall 0.25 precision 0.21
+step 4000 (478s, 1024000 shots) loss 1.0931 burst recall 0.26 precision 0.22
+step 4100 (490s, 1049600 shots) loss 1.0794 burst recall 0.25 precision 0.22
+step 4200 (502s, 1075200 shots) loss 1.0802 burst recall 0.28 precision 0.21
+step 4300 (514s, 1100800 shots) loss 1.0943 burst recall 0.27 precision 0.22
+step 4400 (526s, 1126400 shots) loss 1.0863 burst recall 0.26 precision 0.21
+step 4500 (538s, 1152000 shots) loss 1.0675 burst recall 0.24 precision 0.21
+step 4600 (549s, 1177600 shots) loss 1.0749 burst recall 0.27 precision 0.20
+step 4700 (561s, 1203200 shots) loss 1.0794 burst recall 0.28 precision 0.20
+step 4800 (573s, 1228800 shots) loss 1.0865 burst recall 0.25 precision 0.22
+step 4900 (585s, 1254400 shots) loss 1.0899 burst recall 0.30 precision 0.21
+step 5000 (597s, 1280000 shots) loss 1.0851 burst recall 0.28 precision 0.22
+step 5100 (609s, 1305600 shots) loss 1.0888 burst recall 0.28 precision 0.22
+step 5200 (620s, 1331200 shots) loss 1.0897 burst recall 0.28 precision 0.22
+step 5300 (632s, 1356800 shots) loss 1.0860 burst recall 0.27 precision 0.22
+step 5400 (644s, 1382400 shots) loss 1.0675 burst recall 0.27 precision 0.22
+step 5500 (656s, 1408000 shots) loss 1.0742 burst recall 0.28 precision 0.21
+step 5600 (667s, 1433600 shots) loss 1.0770 burst recall 0.30 precision 0.22
+step 5700 (679s, 1459200 shots) loss 1.0779 burst recall 0.27 precision 0.21
+step 5800 (691s, 1484800 shots) loss 1.0751 burst recall 0.30 precision 0.22
+step 5900 (703s, 1510400 shots) loss 1.0810 burst recall 0.28 precision 0.22
+step 6000 (714s, 1536000 shots) loss 1.0758 burst recall 0.28 precision 0.22
+saved results/v2/net_t0.7_g0.5.pt after 6051 steps (1549056 training shots)
+[2026-11-15 11:41:04] done train t0.7_g0.5 in 12.1 min
+[2026-11-15 11:41:04] start train t0.7_g0.25
+sampler check: mean errors/shot in first batch 35.2 (i.i.d. expectation 35.4)
+step 100 (12s, 25600 shots) loss 1.2022 burst recall 0.00 precision 0.00
+step 200 (24s, 51200 shots) loss 1.1939 burst recall 0.00 precision 0.00
+step 300 (35s, 76800 shots) loss 1.2032 burst recall 0.00 precision 0.00
+step 400 (47s, 102400 shots) loss 1.2018 burst recall 0.00 precision 0.00
+step 500 (59s, 128000 shots) loss 1.1999 burst recall 0.00 precision 0.00
+step 600 (71s, 153600 shots) loss 1.2012 burst recall 0.00 precision 0.00
+step 700 (82s, 179200 shots) loss 1.1953 burst recall 0.00 precision 0.00
+step 800 (94s, 204800 shots) loss 1.1934 burst recall 0.00 precision 0.20
+step 900 (106s, 230400 shots) loss 1.1942 burst recall 0.00 precision 0.21
+step 1000 (118s, 256000 shots) loss 1.1865 burst recall 0.00 precision 0.22
+step 1100 (130s, 281600 shots) loss 1.1891 burst recall 0.00 precision 0.19
+step 1200 (142s, 307200 shots) loss 1.1826 burst recall 0.01 precision 0.15
+step 1300 (154s, 332800 shots) loss 1.1831 burst recall 0.01 precision 0.19
+step 1400 (166s, 358400 shots) loss 1.1795 burst recall 0.01 precision 0.19
+step 1500 (178s, 384000 shots) loss 1.1797 burst recall 0.02 precision 0.19
+step 1600 (189s, 409600 shots) loss 1.1755 burst recall 0.02 precision 0.20
+step 1700 (201s, 435200 shots) loss 1.1700 burst recall 0.02 precision 0.18
+step 1800 (213s, 460800 shots) loss 1.1757 burst recall 0.02 precision 0.21
+step 1900 (225s, 486400 shots) loss 1.1772 burst recall 0.02 precision 0.22
+step 2000 (237s, 512000 shots) loss 1.1777 burst recall 0.03 precision 0.21
+step 2100 (249s, 537600 shots) loss 1.1658 burst recall 0.02 precision 0.22
+step 2200 (261s, 563200 shots) loss 1.1779 burst recall 0.02 precision 0.21
+step 2300 (273s, 588800 shots) loss 1.1736 burst recall 0.02 precision 0.22
+step 2400 (285s, 614400 shots) loss 1.1720 burst recall 0.03 precision 0.25
+step 2500 (297s, 640000 shots) loss 1.1691 burst recall 0.03 precision 0.23
+step 2600 (309s, 665600 shots) loss 1.1745 burst recall 0.03 precision 0.23
+step 2700 (321s, 691200 shots) loss 1.1685 burst recall 0.03 precision 0.22
+step 2800 (333s, 716800 shots) loss 1.1661 burst recall 0.03 precision 0.25
+step 2900 (345s, 742400 shots) loss 1.1697 burst recall 0.04 precision 0.22
+step 3000 (357s, 768000 shots) loss 1.1698 burst recall 0.03 precision 0.23
+step 3100 (369s, 793600 shots) loss 1.1657 burst recall 0.04 precision 0.26
+step 3200 (381s, 819200 shots) loss 1.1647 burst recall 0.04 precision 0.24
+step 3300 (393s, 844800 shots) loss 1.1669 burst recall 0.04 precision 0.24
+step 3400 (405s, 870400 shots) loss 1.1677 burst recall 0.04 precision 0.24
+step 3500 (417s, 896000 shots) loss 1.1630 burst recall 0.04 precision 0.23
+step 3600 (429s, 921600 shots) loss 1.1664 burst recall 0.04 precision 0.26
+step 3700 (441s, 947200 shots) loss 1.1618 burst recall 0.04 precision 0.28
+step 3800 (453s, 972800 shots) loss 1.1686 burst recall 0.04 precision 0.25
+step 3900 (465s, 998400 shots) loss 1.1645 burst recall 0.04 precision 0.26
+step 4000 (477s, 1024000 shots) loss 1.1686 burst recall 0.05 precision 0.26
+step 4100 (489s, 1049600 shots) loss 1.1629 burst recall 0.05 precision 0.25
+step 4200 (501s, 1075200 shots) loss 1.1612 burst recall 0.04 precision 0.25
+step 4300 (513s, 1100800 shots) loss 1.1656 burst recall 0.04 precision 0.28
+step 4400 (525s, 1126400 shots) loss 1.1646 burst recall 0.04 precision 0.26
+step 4500 (537s, 1152000 shots) loss 1.1543 burst recall 0.05 precision 0.25
+step 4600 (549s, 1177600 shots) loss 1.1576 burst recall 0.05 precision 0.27
+step 4700 (561s, 1203200 shots) loss 1.1628 burst recall 0.04 precision 0.22
+step 4800 (572s, 1228800 shots) loss 1.1624 burst recall 0.04 precision 0.29
+step 4900 (584s, 1254400 shots) loss 1.1690 burst recall 0.05 precision 0.26
+step 5000 (596s, 1280000 shots) loss 1.1702 burst recall 0.05 precision 0.26
+step 5100 (608s, 1305600 shots) loss 1.1700 burst recall 0.05 precision 0.28
+step 5200 (620s, 1331200 shots) loss 1.1682 burst recall 0.05 precision 0.26
+step 5300 (632s, 1356800 shots) loss 1.1637 burst recall 0.05 precision 0.27
+step 5400 (644s, 1382400 shots) loss 1.1567 burst recall 0.05 precision 0.25
+step 5500 (655s, 1408000 shots) loss 1.1631 burst recall 0.05 precision 0.26
+step 5600 (667s, 1433600 shots) loss 1.1578 burst recall 0.05 precision 0.27
+step 5700 (679s, 1459200 shots) loss 1.1561 burst recall 0.05 precision 0.27
+step 5800 (691s, 1484800 shots) loss 1.1586 burst recall 0.06 precision 0.27
+step 5900 (703s, 1510400 shots) loss 1.1628 burst recall 0.05 precision 0.28
+step 6000 (715s, 1536000 shots) loss 1.1591 burst recall 0.05 precision 0.27
+saved results/v2/net_t0.7_g0.25.pt after 6044 steps (1547264 training shots)
+[2026-11-15 11:53:11] done train t0.7_g0.25 in 12.1 min
+[2026-11-15 11:53:11] start eval t0.9_g0.25
+network inference on 2000 shots: 2.7s total (incl. sampling)
+theta=0.9 gamma=0.25 shots=2000 (100s)
+  nominal    118
+  oracle     0
+  robust     75
+  soft       67
+  nn         68
+  nn_refine  48
+  oracle gap closed: robust 36%, soft 43%, nn 42%, nn_refine 59%
+[2026-11-15 11:55:02] done eval t0.9_g0.25 in 1.9 min
+[2026-11-15 11:55:02] start eval t0.7_g0.5
+network inference on 2000 shots: 2.7s total (incl. sampling)
+theta=0.7 gamma=0.5 shots=2000 (116s)
+  nominal    455
+  oracle     36
+  robust     284
+  soft       259
+  nn         356
+  nn_refine  271
+  oracle gap closed: robust 41%, soft 47%, nn 24%, nn_refine 44%
+[2026-11-15 11:57:07] done eval t0.7_g0.5 in 2.1 min
+[2026-11-15 11:57:07] start eval t0.7_g0.25
+network inference on 2000 shots: 2.7s total (incl. sampling)
+theta=0.7 gamma=0.25 shots=2000 (111s)
+  nominal    91
+  oracle     0
+  robust     52
+  soft       51
+  nn         88
+  nn_refine  57
+  oracle gap closed: robust 43%, soft 44%, nn 3%, nn_refine 37%
+[2026-11-15 11:59:09] done eval t0.7_g0.25 in 2.0 min
+[2026-11-15 11:59:09] queue finished

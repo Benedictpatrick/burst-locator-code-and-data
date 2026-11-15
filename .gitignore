@@ -5,3 +5,4 @@ __pycache__/
 dist/
 results/burst_net.pt
 paper/manuscript.html
+results/v2/*.pt
